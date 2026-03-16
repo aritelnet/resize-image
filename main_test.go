@@ -78,7 +78,7 @@ func TestDetectFormat(t *testing.T) {
 		{"photo.JPEG", "jpeg"},
 		{"photo.png", "png"},
 		{"photo.PNG", "png"},
-		{"photo.gif", ""},
+		{"photo.gif", "gif"},
 		{"noextension", ""},
 	}
 	for _, tc := range cases {

@@ -65,8 +65,17 @@ resize-image --version
 
 ## Supported Formats
 
+### Input
 - JPEG (`.jpg`, `.jpeg`)
 - PNG (`.png`)
+- BMP (`.bmp`)
+- GIF (`.gif`)
+
+### Output
+- JPEG (`.jpg`, `.jpeg`)
+- PNG (`.png`)
+
+> **Note:** BMP and GIF inputs are always saved as JPEG (`.jpg`) when no `--output` path is specified.
 
 ## Building from Source
 

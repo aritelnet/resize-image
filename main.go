@@ -4,12 +4,14 @@ import (
 	"flag"
 	"fmt"
 	"image"
+	_ "image/gif"
 	"image/jpeg"
 	"image/png"
 	"os"
 	"path/filepath"
 	"strings"
 
+	_ "golang.org/x/image/bmp"
 	"golang.org/x/image/draw"
 )
 
@@ -68,7 +70,7 @@ func main() {
 	}
 	defer f.Close()
 
-	img, format, err := image.Decode(f)
+	img, _, err := image.Decode(f)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "error: cannot decode image: %v\n", err)
 		os.Exit(1)
@@ -84,7 +86,11 @@ func main() {
 	if outputPath == "" {
 		ext := filepath.Ext(inputPath)
 		base := strings.TrimSuffix(inputPath, ext)
-		outputPath = base + "_resized" + ext
+		outExt := strings.ToLower(ext)
+		if outExt == ".bmp" || outExt == ".gif" {
+			outExt = ".jpg"
+		}
+		outputPath = base + "_resized" + outExt
 	}
 
 	out, err := os.Create(outputPath)
@@ -95,8 +101,8 @@ func main() {
 	defer out.Close()
 
 	outputFormat := detectFormat(outputPath)
-	if outputFormat == "" {
-		outputFormat = format
+	if outputFormat == "" || outputFormat == "bmp" || outputFormat == "gif" {
+		outputFormat = "jpeg"
 	}
 
 	switch outputFormat {
@@ -149,6 +155,10 @@ func detectFormat(path string) string {
 		return "jpeg"
 	case ".png":
 		return "png"
+	case ".bmp":
+		return "bmp"
+	case ".gif":
+		return "gif"
 	default:
 		return ""
 	}
